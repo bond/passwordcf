@@ -1,0 +1,29 @@
+swagger: "2.0"
+info:
+  title: sectools
+  description: "Get the name of an airport from its three-letter IATA code."
+  version: "1.0.0"
+schemes:
+  - "https"
+produces:
+  - application/json
+paths:
+  /passwd:
+    get:
+      summary: "Generate secure random password"
+      operationId: genpasswd
+      x-google-backend:
+        address: https://europe-west1-ninja-hacks.cloudfunctions.net/passwordcf
+      parameters:
+        - name: numWords
+          in: query
+          type: integer
+          minimum: 3
+          maximum: 10
+      responses:
+        200:
+          description: "Success."
+          schema:
+            type: string
+        400:
+          description: "The numWords parameter must be above 0 and the maximum is 10."
