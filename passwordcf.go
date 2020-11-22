@@ -46,11 +46,24 @@ func passWords(numWords int) []string {
 
 // GeneratePassword API-entrypoint for generating passwords
 func GeneratePassword(w http.ResponseWriter, r *http.Request) {
+	// CORS preflight request
+	if r.Method == http.MethodOptions {
+		w.Header().Set("Access-Control-Allow-Methods", "GET")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Vary", "Origin")
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}	
+
 
 	// make sure array of words is populated
 	if Words == nil {
 		initWords()
 	}
+
+	// set headers
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
 
 	// get requested number of words
 	reqWords, err := strconv.Atoi(r.URL.Query().Get("numWords"))
